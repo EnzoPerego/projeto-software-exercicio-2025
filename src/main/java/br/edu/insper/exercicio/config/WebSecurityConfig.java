@@ -24,10 +24,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/stocks").permitAll()
-                        .requestMatchers("/stocks/**").permitAll()
-                        .requestMatchers("/order").permitAll()
-                        .requestMatchers("/order/**").permitAll()
+                        .requestMatchers("/cursos").permitAll()
+                        .requestMatchers("/cursos/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 )

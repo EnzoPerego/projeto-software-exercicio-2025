@@ -11,18 +11,24 @@ public class PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-
-    public List<Pessoa> getPessoas() {
+    public List<Pessoa> getCursos() {
         return pessoaRepository.findAll();
     }
 
-    public Pessoa createPessoa(Pessoa pessoa) {
-        return pessoaRepository.save(pessoa);
+    public Pessoa createCurso(Pessoa curso) {
+        return pessoaRepository.save(curso);
     }
 
-    public Pessoa getPessoa(Integer id) {
+    public Pessoa getCurso(Integer id) {
         return pessoaRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+    }
+
+    public void deleteCurso(Integer id) {
+        if (!pessoaRepository.existsById(id)) {
+            throw new RuntimeException("Curso não encontrado");
+        }
+        pessoaRepository.deleteById(id);
     }
 }
