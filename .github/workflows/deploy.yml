@@ -60,3 +60,5 @@ jobs:
             -e MYSQL_HOST=mysql \
             --network=rede --name simulado \
             enzoperego/simulado-ci:${{ github.sha }}
+
+            
