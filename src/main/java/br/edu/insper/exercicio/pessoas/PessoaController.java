@@ -1,8 +1,12 @@
 package br.edu.insper.exercicio.pessoas;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,7 +23,7 @@ public class PessoaController {
     }
 
     @PostMapping
-    public Pessoa createCurso(@RequestBody Pessoa curso) {
+    public Pessoa createCurso(@AuthenticationPrincipal Jwt jwt, @RequestBody Pessoa curso) {
         return pessoaService.createCurso(curso);
     }
 
@@ -29,7 +33,13 @@ public class PessoaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCurso(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteCurso(@AuthenticationPrincipal Jwt jwt, @PathVariable Integer id) {
+        List<String> roles = jwt.getClaim("https://dev-c5cya7ea1phr4j8p.us.auth0.com/roles");
+        
+        if (roles == null || !roles.contains("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Apenas administradores podem excluir cursos");
+        }
+        
         pessoaService.deleteCurso(id);
         return ResponseEntity.noContent().build();
     }
